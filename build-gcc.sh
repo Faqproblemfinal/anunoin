@@ -52,7 +52,7 @@ build_binutils() {
     --disable-werror \
     --disable-gdb \
     --enable-gold \
-    --with-pkgversion="Mycroft Binutils"
+    --with-pkgversion="Binutils"
   make CFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" -j$($(nproc --all))
   make install -j$(($(nproc --all) + 2))
   cd ../
@@ -65,7 +65,7 @@ build_gcc() {
   cd gcc
   ./contrib/download_prerequisites
   echo "Mycroft" > gcc/DEV-PHASE
-  echo -n > gcc/DATESTAMP
+  echo "" > gcc/DATESTAMP
   cd ../
   mkdir build-gcc
   cd build-gcc
