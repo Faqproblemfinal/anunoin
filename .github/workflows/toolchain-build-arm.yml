@@ -1,0 +1,47 @@
+name: ARM GCC+LLD Build
+
+on:
+  workflow_dispatch:
+  watch:
+   types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    container:
+      image: archlinux:base-devel
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup
+      run: |
+        pacman -Syu --needed --noconfirm base base-devel clang cmake git libc++ lld lldb ninja
+        
+    - name: Set build date
+      id: get-date
+      run: |
+        echo ::set-output name=date::$(/bin/date -u "+%Y%m%d")
+        
+    - name: Build & Push
+      run: |
+        source /etc/profile
+        git config --global user.name "${GITHUB_USER}"
+        git config --global user.email "${GITHUB_EMAIL}"
+        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/Faqproblemfinal/gcc-arm ../gcc-arm -b master
+        rm -rf ../gcc-arm/*
+        chmod a+x build-*.sh
+        ./build-gcc.sh -a arm
+        ./build-lld.sh -a arm
+        script_dir=$(pwd)
+        cd ../gcc-arm
+        ./bin/arm-eabi-gcc -v 2>&1 | tee /tmp/gcc-arm-version
+        ./bin/arm-eabi-ld.lld -v 2>&1 | tee /tmp/lld-arm-version
+        bash "$script_dir/strip-binaries.sh"
+        git add . -f
+        git commit -as -m "Import ARM GCC ${{ steps.get-date.outputs.date }}" -m "Build completed on: $(/bin/date)" -m "Configuration: $(/bin/cat /tmp/gcc-arm-version)" -m "LLD: $(/bin/cat /tmp/lld-arm-version)"
+        git gc
+        git push origin master -f
+      env:
+        GITHUB_EMAIL: ${{ secrets.EMAIL }}
+        GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+        GITHUB_USER: ${{ secrets.USERNAME }}
