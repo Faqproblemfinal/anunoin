@@ -31,7 +31,7 @@ jobs:
         alias g++=g++-10
         git config --global user.name "${GITHUB_USER}"
         git config --global user.email "${GITHUB_EMAIL}"
-        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/Faqproblemfinal/gcc-arm64 ../gcc-arm64 -b main
+        git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/Faqproblemfinal/gcc-arm64 ../gcc-arm64 -b master
         rm -rf ../gcc-arm64/*
         chmod a+x build-*.sh
         ./build-gcc.sh -a arm64
@@ -42,7 +42,7 @@ jobs:
         git add . -f
         git commit -as -m "Import ARM64 GCC ${{ steps.get-date.outputs.date }}" -m "Build completed on: $(/bin/date)" -m "Configuration: $(/bin/cat /tmp/gcc-version)"
         git gc
-        git push origin main -f
+        git push origin master -f
       env:
         GITHUB_EMAIL: ${{ secrets.EMAIL }}
         GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
