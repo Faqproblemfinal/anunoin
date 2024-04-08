@@ -40,7 +40,7 @@ jobs:
         ./build-gcc.sh -a arm
         script_dir=$(pwd)
         cd ../gcc-arm
-        ./bin/aarch64-elf-gcc -v 2>&1 | tee /tmp/gcc-version
+        ./bin/arm-eabi-gcc -v 2>&1 | tee /tmp/gcc-version
         bash "$script_dir/strip-binaries.sh"
         git add . -f
         git commit -as -m "Import arm GCC ${{ steps.get-date.outputs.date }}" -m "Build completed on: $(/bin/date)" -m "Configuration: $(/bin/cat /tmp/gcc-version)"
