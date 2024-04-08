@@ -1,4 +1,4 @@
-name: ARM64 GCC+LLD Build
+name: ARM64 GCC-+LLD Build
 
 on:
   workflow_dispatch:
