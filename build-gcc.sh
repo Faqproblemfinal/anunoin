@@ -31,10 +31,10 @@ echo "||                                                                    ||"
 download_resources() {
   echo "Downloading Pre-requisites"
   echo "Cloning binutils"
-  git clone git://sourceware.org/git/binutils-gdb.git -b binutils-2_34-branch binutils --depth=1
+  git clone git://sourceware.org/git/binutils-gdb.git -b binutils-2_28-branch binutils --depth=1
   echo "Cloned binutils!"
   echo "Cloning GCC"
-  git clone git://gcc.gnu.org/git/gcc.git -b releases/gcc-9.3.0 gcc --depth=1
+  git clone git://gcc.gnu.org/git/gcc.git -b releases/gcc-7.5.0 gcc --depth=1
   cd ${WORK_DIR}
   echo "Downloaded prerequisites!"
 }
@@ -64,8 +64,7 @@ build_gcc() {
   echo "Building GCC"
   cd gcc
   ./contrib/download_prerequisites
-  echo "Mycroft" > gcc/DEV-PHASE
-  echo "" > gcc/DATESTAMP
+  echo "Mycroft" > gcc/DATESTAMP
   cd ../
   mkdir build-gcc
   cd build-gcc
