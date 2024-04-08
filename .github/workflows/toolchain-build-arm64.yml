@@ -1,10 +1,11 @@
 name: ARM64 GCC-+LLD Build
 
 on:
+  push:
+    paths:
+      - ".github/workflows/main.yml"
   workflow_dispatch:
-  watch:
-   types: [started]
-
+  
 jobs:
   build:
 
